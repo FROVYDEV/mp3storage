@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub MP3 Audio Player</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .player-container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #1DB954; /* Spotify green vibes */
+        }
+        .track-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .track-item {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 4px;
+        }
+        .track-item:hover {
+            background-color: #2a2a2a;
+        }
+        .track-item.active {
+            color: #1DB954;
+            font-weight: bold;
+            background-color: #2a2a2a;
+        }
+        audio {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .now-playing {
+            font-size: 0.9rem;
+            color: #b3b3b3;
+            margin-top: 10px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="player-container">
+    <h1>My GitHub Audio Player</h1>
+    
+    <ul class="track-list" id="playlist">
+        <li class="track-item" data-src="song1.mp3">Track 1 - song1.mp3</li>
+        <li class="track-item" data-src="song2.mp3">Track 2 - song2.mp3</li>
+        <li class="track-item" data-src="song3.mp3">Track 3 - song3.mp3</li>
+    </ul>
+
+    <div class="now-playing" id="nowPlaying">Select a track to play</div>
+    <audio id="audioPlayer" controls></audio>
+</div>
+
+<script>
+    // Base CDN URL pointing to your master branch
+    const baseCDN = "https://cdn.jsdelivr.net/gh/FROVYDEV/mp3storage@master/";
+    
+    const player = document.getElementById('audioPlayer');
+    const playlist = document.getElementById('playlist');
+    const nowPlaying = document.getElementById('nowPlaying');
+    const trackItems = document.querySelectorAll('.track-item');
+
+    trackItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove active class from all items
+            trackItems.forEach(i => i.classList.remove('active'));
+            
+            // Add active class to clicked item
+            this.classList.add('active');
+            
+            // Get file name and combine with CDN base
+            const trackFile = this.getAttribute('data-src');
+            player.src = baseCDN + trackFile;
+            
+            // Update UI and play
+            nowPlaying.textContent = "Now Playing: " + this.textContent;
+            player.play();
+        });
+    });
+</script>
+
+</body>
+</html>
